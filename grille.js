@@ -1,5 +1,5 @@
 "use strict"
-const pas = 10;
+const nbCases = 10;
 let tableCellule = [];
 let variableInterval;
 let canvaWidth = 0;
@@ -7,8 +7,8 @@ let canvaHeight = 0;
 window.onload = initialisation;
 
 function initialisation() {
+    initEventListner();
     let canvas = document.getElementById("table");
-    canvas.addEventListener('click', tableOnClick);
     canvaWidth = canvas.width;
     canvaHeight = canvas.height;
     initDessinGrille();
@@ -19,30 +19,43 @@ function initialisation() {
 function initDessinGrille(){
     let canvas = document.getElementById("grille");
     let ctx = canvas.getContext("2d");
-    dessineGrille(canvas, ctx);
+    dessineGrille(ctx);
 }
 
 function initDessinTable(){
     let canvas = document.getElementById("table");
     let ctx = canvas.getContext("2d");
-    dessineTable(tableCellule, canvas, ctx);
+    dessineTable(tableCellule, ctx);
 }
 
 function initTable(table) {
-    for (let i=0; i<pas; i++) {
+    for (let i=0; i<nbCases; i++) {
         let tmp = [];
-        for (let j=0; j<pas; j++) {
+        for (let j=0; j<nbCases; j++) {
             tmp.push(false);
         }
         table.push(tmp);
     }
 }
 
+function initEventListner() {
+    let start_button = document.getElementById("start_button");
+    start_button.addEventListener('click', debut);
+    let stop_button = document.getElementById("stop_button");
+    stop_button.addEventListener('click', stop);
+    let step_button = document.getElementById("step_button");
+    step_button.addEventListener('click', actualisation);
+    let reset_button = document.getElementById("reset_button");
+    reset_button.addEventListener('click', reinitialiser);
+    let canvas = document.getElementById("table");
+    canvas.addEventListener('click', tableOnClick);
+}
+
 function actualisation() {
     let canvas = document.getElementById("table");
     let ctx = canvas.getContext("2d");
     tableCellule = prochaineTable(tableCellule);
-    dessineTable(tableCellule, canvas, ctx);
+    dessineTable(tableCellule, ctx);
 }
 
 function nbVoisinsVivants(table, x, y) {
@@ -52,22 +65,22 @@ function nbVoisinsVivants(table, x, y) {
             if (table[x-1][y-1]) res++;
         }
         if (table[x-1][y]) res++;
-        if (y < pas-1) {
+        if (y < nbCases-1) {
             if (table[x-1][y+1]) res++;
         }
     }
     if (y > 0) {
         if (table[x][y-1]) res++;
     }
-    if (y < pas-1) {
+    if (y < nbCases-1) {
         if (table[x][y+1]) res++;
     }
-    if (x < pas-1) {
+    if (x < nbCases-1) {
         if (y > 0) {
             if (table[x+1][y-1]) res++;
         }
         if (table[x+1][y]) res++;
-        if (y < pas-1) {
+        if (y < nbCases-1) {
             if (table[x+1][y+1]) res++;
         }
     }
@@ -76,9 +89,9 @@ function nbVoisinsVivants(table, x, y) {
 
 function prochaineTable(table1) {
     let table2 = [];
-    for (let i=0; i<pas; i++) {
+    for (let i=0; i<nbCases; i++) {
         let tmp = [];
-        for (let j=0; j<pas; j++) {
+        for (let j=0; j<nbCases; j++) {
             let voisins = nbVoisinsVivants(table1,i,j);
             if (voisins == 3) {
                 tmp.push(true);
@@ -93,17 +106,17 @@ function prochaineTable(table1) {
     return table2;
 }
 
-function dessineGrille(grille, context) {
-    let pasWidth = canvaWidth/pas;
-    let pasHeight = canvaHeight/pas;
+function dessineGrille(context) {
+    let pasWidth = canvaWidth/nbCases;
+    let pasHeight = canvaHeight/nbCases;
     context.beginPath();
 
-    for (let i = 1; i<pas; i++) {
+    for (let i = 1; i<nbCases; i++) {
         context.moveTo(pasWidth*i, 0);
         context.lineTo(pasWidth*i, canvaHeight);
     }
 
-    for (let i =1; i<pas; i++) {
+    for (let i =1; i<nbCases; i++) {
         context.moveTo(0, pasHeight*i);
         context.lineTo(canvaWidth, pasHeight*i);
     }
@@ -112,12 +125,12 @@ function dessineGrille(grille, context) {
     context.stroke();
 }
 
-function dessineTable(table, grille, context) {
-    let pasWidth = canvaWidth/pas;
-    let pasHeight = canvaHeight/pas;
+function dessineTable(table, context) {
+    let pasWidth = canvaWidth/nbCases;
+    let pasHeight = canvaHeight/nbCases;
     let rayon = Math.min(pasWidth, pasHeight)/2 - 2;
-    for (let i=0; i<pas; i++) {
-        for (let j=0; j<pas; j++) {
+    for (let i=0; i<nbCases; i++) {
+        for (let j=0; j<nbCases; j++) {
             if (table[i][j]) {
                 context.beginPath();
                 let centreX = pasWidth/2 + pasWidth*i;
@@ -131,24 +144,14 @@ function dessineTable(table, grille, context) {
     }
 }
 
-function start() {
-    let timer = 1000;
-    actualisation();
-    variableInterval = setInterval(actualisation, timer);
-}
-
-function stop() {
-    clearInterval(variableInterval);
-}
-
 function inverseCellule(table, ligne, colonne) {
     table[colonne][ligne] = !table[colonne][ligne];
     initDessinTable();
 }
 
 function fromPosToCase(posX, posY) {
-    let pasWidth = canvaWidth/pas;
-    let pasHeight = canvaHeight/pas;
+    let pasWidth = canvaWidth/nbCases;
+    let pasHeight = canvaHeight/nbCases;
     let ligne = Math.trunc(posY/pasHeight);
     let colonne = Math.trunc(posX/pasWidth);
     return [ligne, colonne];
@@ -164,4 +167,20 @@ function tableOnClick(event) {
     let ligne = place[0];
     let colonne =  place[1];
     inverseCellule(tableCellule, ligne, colonne);
+}
+
+function debut() {
+    let timer = 1000;
+    actualisation();
+    variableInterval = setInterval(actualisation, timer);
+}
+
+function stop() {
+    clearInterval(variableInterval);
+}
+
+function reinitialiser() {
+    tableCellule = [];
+    initTable(tableCellule);
+    initDessinTable();
 }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Jeu de la Vie</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="JdV.css">
+    <script src="grille.js"></script>
+</head>
+
+<body>
+    <h1>Jeu de la Vie</h1>
+    <div class="dessin">
+        <canvas id="grille" width="300" height="300">
+        </canvas>
+        <canvas id="table" width="300" height="300">
+        </canvas>
+    </div>
+    
+    <p>
+        <button onclick="start()">Start</button>
+        <button onclick="stop()">Stop</button>
+        <button onclick="actualisation()">Step</button>
+        <!--Gerer les évenements via les addEventListener dans le JS plutot que dans le html-->
+    </p>
+</body>
+
+</html>

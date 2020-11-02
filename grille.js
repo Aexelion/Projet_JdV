@@ -2,9 +2,15 @@
 const pas = 10;
 let tableCellule = [];
 let variableInterval;
+let canvaWidth = 0;
+let canvaHeight = 0;
 window.onload = initialisation;
 
 function initialisation() {
+    let canvas = document.getElementById("table");
+    canvas.addEventListener('click', tableOnClick);
+    canvaWidth = canvas.width;
+    canvaHeight = canvas.height;
     initDessinGrille();
     initTable(tableCellule);
     initDessinTable();
@@ -19,7 +25,6 @@ function initDessinGrille(){
 function initDessinTable(){
     let canvas = document.getElementById("table");
     let ctx = canvas.getContext("2d");
-    canvas.addEventListener('click', tableOnClick);
     dessineTable(tableCellule, canvas, ctx);
 }
 
@@ -40,7 +45,7 @@ function actualisation() {
     dessineTable(tableCellule, canvas, ctx);
 }
 
-function nbVoisins(table, x, y) {
+function nbVoisinsVivants(table, x, y) {
     let res = 0
     if (x > 0) {
         if (y > 0) {
@@ -50,7 +55,6 @@ function nbVoisins(table, x, y) {
         if (y < pas-1) {
             if (table[x-1][y+1]) res++;
         }
-
     }
     if (y > 0) {
         if (table[x][y-1]) res++;
@@ -75,7 +79,7 @@ function prochaineTable(table1) {
     for (let i=0; i<pas; i++) {
         let tmp = [];
         for (let j=0; j<pas; j++) {
-            let voisins = nbVoisins(table1,i,j);
+            let voisins = nbVoisinsVivants(table1,i,j);
             if (voisins == 3) {
                 tmp.push(true);
             } else if (voisins == 2) {
@@ -90,18 +94,18 @@ function prochaineTable(table1) {
 }
 
 function dessineGrille(grille, context) {
-    let pasWidth = grille.width/pas;
-    let pasHeight = grille.height/pas;
+    let pasWidth = canvaWidth/pas;
+    let pasHeight = canvaHeight/pas;
     context.beginPath();
 
     for (let i = 1; i<pas; i++) {
         context.moveTo(pasWidth*i, 0);
-        context.lineTo(pasWidth*i, grille.height);
+        context.lineTo(pasWidth*i, canvaHeight);
     }
 
     for (let i =1; i<pas; i++) {
         context.moveTo(0, pasHeight*i);
-        context.lineTo(grille.width, pasHeight*i);
+        context.lineTo(canvaWidth, pasHeight*i);
     }
     context.strokeStyle = "#000000";
     context.lineWidth = 2;
@@ -109,8 +113,8 @@ function dessineGrille(grille, context) {
 }
 
 function dessineTable(table, grille, context) {
-    let pasWidth = grille.width/pas;
-    let pasHeight = grille.height/pas;
+    let pasWidth = canvaWidth/pas;
+    let pasHeight = canvaHeight/pas;
     let rayon = Math.min(pasWidth, pasHeight)/2 - 2;
     for (let i=0; i<pas; i++) {
         for (let j=0; j<pas; j++) {
@@ -137,13 +141,27 @@ function stop() {
     clearInterval(variableInterval);
 }
 
-function inverseCellule(table, x, y) {
-    table[x][y] = !table[x][y];
+function inverseCellule(table, ligne, colonne) {
+    table[colonne][ligne] = !table[colonne][ligne];
     initDessinTable();
 }
 
+function fromPosToCase(posX, posY) {
+    let pasWidth = canvaWidth/pas;
+    let pasHeight = canvaHeight/pas;
+    let ligne = Math.trunc(posY/pasHeight);
+    let colonne = Math.trunc(posX/pasWidth);
+    return [ligne, colonne];
+}
+
 function tableOnClick(event) {
-    let x = event.pageX;
-    let y = event.pageY;
-    alert('Hello world\n' + 'x :' + x );
+    let canva = document.getElementById('dessin');
+    let canvaLeft = canva.offsetLeft + canva.clientLeft;
+    let canvaTop = canva.offsetTop + canva.clientTop;
+    let x = event.pageX - canvaLeft;
+    let y = event.pageY - canvaTop;
+    let place = fromPosToCase(x,y);
+    let ligne = place[0];
+    let colonne =  place[1];
+    inverseCellule(tableCellule, ligne, colonne);
 }

@@ -8,6 +8,7 @@ window.onload = initialisation;
 
 function initialisation() {
     initEventListner();
+    initBoutons();
     let canvas = document.getElementById("table");
     canvaWidth = canvas.width;
     canvaHeight = canvas.height;
@@ -39,14 +40,6 @@ function initTable(table) {
 }
 
 function initEventListner() {
-    let start_button = document.getElementById("start_button");
-    start_button.addEventListener('click', debut);
-    let stop_button = document.getElementById("stop_button");
-    stop_button.addEventListener('click', stop);
-    let step_button = document.getElementById("step_button");
-    step_button.addEventListener('click', actualisation);
-    let reset_button = document.getElementById("reset_button");
-    reset_button.addEventListener('click', reinitialiser);
     let canvas = document.getElementById("table");
     canvas.addEventListener('click', tableOnClick);
 }
@@ -171,6 +164,7 @@ function tableOnClick(event) {
 
 function debut() {
     let timer = 1000;
+    stop();
     actualisation();
     variableInterval = setInterval(actualisation, timer);
 }

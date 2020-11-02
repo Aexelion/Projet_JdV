@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="JdV.css">
     <script src="grille.js"></script>
+    <script src="bouton.js"></script>
 </head>
 
 <body>
@@ -17,12 +18,20 @@
         </canvas>
     </div>
     
-    <p>
+    <div>
+        <input type="checkbox" id="torique">
+        <label for="torique">Grille de jeu torique</label>
+    </div>
+    <div>
+        <input type="range" id="vitesse" value="1" min="1" max="5" step="1">
+        <span>Vitesse actuelle : <span class="vitesse_actuelle">0</span></span>
+    </div>
+    <div>
         <button id="start_button">Start</button>
         <button id="stop_button">Stop</button>
         <button id="step_button">Pas à pas</button>
         <button id="reset_button">Réinitialiser la grille</button>
-    </p>
+    </div>
 </body>
 
 </html>

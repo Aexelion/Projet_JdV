@@ -1,5 +1,6 @@
 "use strict"
 const nbCases = 10;
+let animationEnCours = false;
 let tableCellule = [];
 let variableInterval;
 let canvaWidth = 0;
@@ -162,14 +163,16 @@ function tableOnClick(event) {
     inverseCellule(tableCellule, ligne, colonne);
 }
 
-function debut() {
-    let timer = 1000;
+function debut(t=1000) {
+    let timer = t;
     stop();
+    animationEnCours = true;
     actualisation();
     variableInterval = setInterval(actualisation, timer);
 }
 
 function stop() {
+    animationEnCours = false;
     clearInterval(variableInterval);
 }
 

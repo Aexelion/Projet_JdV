@@ -1,8 +1,9 @@
 "use strict"
+let timer = 1000;
 
 function initBoutons() {
     let start_button = document.getElementById("start_button");
-    start_button.addEventListener('click', debut);
+    start_button.addEventListener('click', function() {debut(timer);});
     let stop_button = document.getElementById("stop_button");
     stop_button.addEventListener('click', stop);
     let step_button = document.getElementById("step_button");
@@ -12,5 +13,12 @@ function initBoutons() {
     let vitesse = document.querySelector("#vitesse");
     let vitesseAffiche = document.querySelector(".vitesse_actuelle");
     vitesseAffiche.textContent = vitesse.value;
-    vitesse.addEventListener('input', function() {vitesseAffiche.textContent = vitesse.value});
+    vitesse.addEventListener('input', function() {vitesseAffiche.textContent = vitesse.value; modifieTimer(vitesse.value)});
+}
+
+function modifieTimer(vitesse) {
+    timer = 1175 - vitesse*175
+    if (animationEnCours) {
+        debut(timer)
+    }
 }

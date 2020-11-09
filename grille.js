@@ -52,33 +52,32 @@ function actualisation() {
     dessineTable(tableCellule, ctx);
 }
 
-function nbVoisinsVivants(table, x, y) {
+function nbVoisinsVivants(table, ligne, colonne) {
     let res = 0
-    if (x > 0) {
-        if (y > 0) {
-            if (table[x-1][y-1]) res++;
-        }
-        if (table[x-1][y]) res++;
-        if (y < nbCases-1) {
-            if (table[x-1][y+1]) res++;
-        }
-    }
-    if (y > 0) {
-        if (table[x][y-1]) res++;
-    }
-    if (y < nbCases-1) {
-        if (table[x][y+1]) res++;
-    }
-    if (x < nbCases-1) {
-        if (y > 0) {
-            if (table[x+1][y-1]) res++;
-        }
-        if (table[x+1][y]) res++;
-        if (y < nbCases-1) {
-            if (table[x+1][y+1]) res++;
+    for (let i = ligne-1; i<= ligne+1; i++) {
+        for (let j = colonne-1; j<= colonne+1; j++) {
+            if ( (i<0) || (j<0) || (i>=nbCases) || (j>=nbCases) || (i==ligne && j==colonne) ) {
+                continue
+            }
+            res = table[i][j] ? res+1 : res;
         }
     }
     return res;
+}
+
+function nbVoisinsVivantsTorique(table, ligne, colonne) {
+    let res = 0;
+    for (let i = ligne-1; i<= ligne+1; i++) {
+        for (let j = colonne-1; j <= colonne+1; j++) {
+            if (i == ligne && j == colonne) {
+                continue
+            }
+            let iModifie = ((i%nbCases) +nbCases) % nbCases; // Renvois le modulo positif de i par nbCases (de même signe que nbCases)
+            let jModifie = ((j%nbCases) +nbCases) % nbCases; // Idem avec j
+            res = table[iModifie][jModifie] ? res+1 : res;
+        }
+    }
+    return res
 }
 
 function prochaineTable(table1) {
@@ -86,7 +85,7 @@ function prochaineTable(table1) {
     for (let i=0; i<nbCases; i++) {
         let tmp = [];
         for (let j=0; j<nbCases; j++) {
-            let voisins = nbVoisinsVivants(table1,i,j);
+            let voisins = torique ? nbVoisinsVivantsTorique(table1, i, j) : nbVoisinsVivants(table1,i,j);
             if (voisins == 3) {
                 tmp.push(true);
             } else if (voisins == 2) {
@@ -127,19 +126,19 @@ function dessineTable(table, context) {
         for (let j=0; j<nbCases; j++) {
             if (table[i][j]) {
                 context.beginPath();
-                let centreX = pasWidth/2 + pasWidth*i;
-                let centreY = pasHeight/2 + pasHeight*j;
+                let centreX = pasWidth/2 + pasWidth*j;
+                let centreY = pasHeight/2 + pasHeight*i;
                 context.arc(centreX, centreY, rayon, 0, 2*Math.PI);
                 context.fill();
             } else {
-                context.clearRect(pasWidth*i, pasHeight*j, pasWidth, pasHeight);
+                context.clearRect(pasWidth*j, pasHeight*i, pasWidth, pasHeight);
             }
         }
     }
 }
 
 function inverseCellule(table, ligne, colonne) {
-    table[colonne][ligne] = !table[colonne][ligne];
+    table[ligne][colonne] = !table[ligne][colonne];
     initDessinTable();
 }
 

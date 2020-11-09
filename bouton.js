@@ -1,5 +1,6 @@
 "use strict"
 let timer = 1000;
+let torique = false;
 
 function initBoutons() {
     let start_button = document.getElementById("start_button");
@@ -10,6 +11,9 @@ function initBoutons() {
     step_button.addEventListener('click', actualisation);
     let reset_button = document.getElementById("reset_button");
     reset_button.addEventListener('click', reinitialiser);
+    let torique_check = document.getElementById("torique");
+    torique = torique_check.checked;
+    torique_check.addEventListener('input', function() {torique = torique_check.checked});
     let vitesse = document.querySelector("#vitesse");
     let vitesseAffiche = document.querySelector(".vitesse_actuelle");
     vitesseAffiche.textContent = vitesse.value;

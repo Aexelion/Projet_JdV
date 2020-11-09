@@ -11,27 +11,81 @@
 
 <body>
     <h1>Jeu de la Vie</h1>
-    <div class="dessin" id="dessin">
-        <canvas id="grille" width="300" height="300">
-        </canvas>
-        <canvas id="table" width="300" height="300">
-        </canvas>
-    </div>
-    
     <div>
-        <input type="checkbox" id="torique">
-        <label for="torique">Grille de jeu torique</label>
+        <p>
+            Le jeu de la vie est un automate cellulaire imaginé par John Horton Conway en 1970.<br>
+            Il s'agit donc plus d'une simulation que d'un réel jeu.<br>
+            Dans ce jeu, des cellules naissent, vivent, et meurent selon un ensemble de règles prédéfinies.<br>
+        </p>
     </div>
+    <h2>Les règles classique du jeu de la vie</h2>
     <div>
-        <input type="range" id="vitesse" value="1" min="1" max="5" step="1">
-        <span>Vitesse actuelle : <span class="vitesse_actuelle">0</span></span>
+        <p>
+            A chaque étape du jeu, chaque cellule peut être dans 2 états distincts : vivante ou morte.<br>
+            Une cellule possède à chaque instant 8 voisins.<br>
+            Son état à l'étape suivante dépendra de son l'état actuel ainsi que de l'état de ses voisins<br>
+            Le jeu se déroule sur une grille en 2 dimensions, théoriquement infini, mais de longueur et largeur finies en pratique.<br>
+        </p>
+        Les règles de bases sont :
+        <ul>
+            <li>Une cellule morte possédant exactement 3 voisins vivants devient vivante.</li>
+            <li>Une cellule vivante possédant 2 ou 3 voisins vivants reste vivante.</li>
+            <li>Dans tout les autres cas, la cellule meurt.</li>
+        </ul>
     </div>
+    <h2>Modification des règles</h2>
     <div>
-        <button id="start_button">Start</button>
-        <button id="stop_button">Stop</button>
-        <button id="step_button">Pas à pas</button>
-        <button id="reset_button">Réinitialiser la grille</button>
+        <p>
+            Il est possible de modifier les règles du jeu de la vie afin d'obtenir un comportement différent avec une même grille de départ.<br>
+            Une des modification possible est de rendre la grille "circulaire".<br>
+            On considère alors que les côtés gauche et droit de la grille se touchent. Et de même pour les côtés haut et bas de la grille<br>
+            On se trouve alors dans une grille placé sur un tore (un donut).<br>
+            <br>
+            Une autre modification serait de changer les règles de survie en fonction du nombre de voisins.
+        </p>
     </div>
+    <h2>Testez vous-même</h2>
+    <div id="Zone_Test">
+        <div class="dessin" id="dessin">
+            <canvas id="grille" width="300" height="300">
+            </canvas>
+            <canvas id="table" width="300" height="300">
+            </canvas>
+        </div>
+        <div>
+            <input type="checkbox" id="torique">
+            <label for="torique">Grille de jeu torique</label>
+        </div>
+        <div>
+            <input type="range" id="vitesse" value="1" min="1" max="5" step="1">
+            <span>Vitesse actuelle : <span class="vitesse_actuelle">0</span></span>
+        </div>
+        <div>
+            <button id="start_button">Start</button>
+            <button id="stop_button">Stop</button>
+            <button id="step_button">Pas à pas</button>
+            <button id="reset_button">Réinitialiser la grille</button>
+        </div>
+    </div>
+    <h2>D'autre automates cellulaires</h2>
+    <div>
+        <p>
+            Le jeu de la vie est un automate cellulaire particulier.<br>
+            Il existe de nombreux autre automates cellulaire ayant chacun un nombre d'état possible fini ainsi que des règles de transition qui lui sont propre.<br>
+            <br>
+            On peut par exemple ajouter différents états formant un cycle.<br>
+            La cellule évolue alors parmis l'ensemble des états possible selon le nombre de cellules voisines étant dans l'état suivant.<br>
+            Cet automate est appelé automate cyclique dont le plus connu est celui de D. Griffeath.<br>
+            <div>
+                <img src="./Griffeath.gif"
+                alt="Automate cyclique de D. Griffeath"
+                title="Automate cyclique de D. Griffeath"
+                height="500"
+                width="448">
+            </div>
+        </p>
+    </div>
+
 </body>
 
 </html>

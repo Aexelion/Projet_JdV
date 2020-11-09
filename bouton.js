@@ -10,7 +10,7 @@ function initBoutons() {
     let step_button = document.getElementById("step_button");
     step_button.addEventListener('click', actualisation);
     let reset_button = document.getElementById("reset_button");
-    reset_button.addEventListener('click', reinitialiser);
+    reset_button.addEventListener('click', function() {stop() ;reinitialiser()});
     let torique_check = document.getElementById("torique");
     torique = torique_check.checked;
     torique_check.addEventListener('input', function() {torique = torique_check.checked});

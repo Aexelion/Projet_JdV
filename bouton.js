@@ -1,6 +1,6 @@
 "use strict"
 let timer = 1000;
-let torique = false;
+let torique = nbVoisinsVivants;
 
 function initBoutons() {
     let start_button = document.getElementById("start_button");
@@ -12,8 +12,8 @@ function initBoutons() {
     let reset_button = document.getElementById("reset_button");
     reset_button.addEventListener('click', function() {stop() ;reinitialiser()});
     let torique_check = document.getElementById("torique");
-    torique = torique_check.checked;
-    torique_check.addEventListener('input', function() {torique = torique_check.checked});
+    torique = torique_check.checked ? nbVoisinsVivantsTorique : nbVoisinsVivants;
+    torique_check.addEventListener('input', function() {torique = torique_check.checked ? nbVoisinsVivantsTorique : nbVoisinsVivants});
     let vitesse = document.querySelector("#vitesse");
     let vitesseAffiche = document.querySelector(".vitesse_actuelle");
     vitesseAffiche.textContent = vitesse.value;

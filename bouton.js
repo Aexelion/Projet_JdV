@@ -8,7 +8,7 @@ function initBoutons() {
     let stop_button = document.getElementById("stop_button");
     stop_button.addEventListener('click', stop);
     let step_button = document.getElementById("step_button");
-    step_button.addEventListener('click', actualisation);
+    step_button.addEventListener('click', function() {stop(); actualisation()});
     let reset_button = document.getElementById("reset_button");
     reset_button.addEventListener('click', function() {stop() ;reinitialiser()});
     let torique_check = document.getElementById("torique");
